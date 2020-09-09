@@ -129,7 +129,7 @@ void setup(void) {
     /// 原点坐标
     vPoint[pointCount][0] = 0.0f;
     vPoint[pointCount][1] = 0.0f;
-    vPoint[pointCount][2] = -0.5f;
+    vPoint[pointCount][2] = 0.5f;
     pointCount++;
     
     /// 通过三角形扇创建扇形
