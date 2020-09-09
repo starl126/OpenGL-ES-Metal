@@ -1,9 +1,9 @@
 //
 //  Practice.hpp
-//  01 OpenGL 环境搭建
+//  OpenGL_practice
 //
 //  Created by 天边的星星 on 2020/9/9.
-//  Copyright © 2020 Miss CC. All rights reserved.
+//  Copyright © 2020 starxin. All rights reserved.
 //
 
 #ifndef Practice_hpp

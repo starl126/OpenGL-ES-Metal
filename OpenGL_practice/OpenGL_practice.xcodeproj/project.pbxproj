@@ -75,8 +75,8 @@
 		4B751BB62508B49A00514DB4 /* OpenGL_practice */ = {
 			isa = PBXGroup;
 			children = (
-				4B751BE72508B79500514DB4 /* 练习 */,
 				4B751BD72508B76300514DB4 /* include */,
+				4B751BE72508B79500514DB4 /* 练习 */,
 				4B751BCB2508B55500514DB4 /* Info.plist */,
 				4B751BCD2508B59800514DB4 /* OpenGL_practice.entitlements */,
 				4B751BEC2508BA6900514DB4 /* main.cpp */,
@@ -126,8 +126,8 @@
 		4B751BE72508B79500514DB4 /* 练习 */ = {
 			isa = PBXGroup;
 			children = (
-				4B751BE82508B7A800514DB4 /* Practice.cpp */,
 				4B751BE92508B7A900514DB4 /* Practice.hpp */,
+				4B751BE82508B7A800514DB4 /* Practice.cpp */,
 			);
 			path = "练习";
 			sourceTree = "<group>";
