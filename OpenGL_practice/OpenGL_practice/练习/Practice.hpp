@@ -9,17 +9,7 @@
 #ifndef Practice_hpp
 #define Practice_hpp
 
-#include <stdio.h>
-#include "GLTools.h"
-#include "GLBatch.h"
-#include "GLFrame.h"
-#include "GLMatrixStack.h"
-#include "GLFrustum.h"
-#include "GLGeometryTransform.h"
-#include "GLShaderManager.h"
-#include <math.h>
-#include <glut/glut.h>
-#include "math3d.h"
+#include "LibraryHeader.h"
 
 /// main函数入口
 int testForComplicatedShapes(int argc, char *argv[]);

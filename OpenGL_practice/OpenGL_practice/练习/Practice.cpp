@@ -45,7 +45,12 @@ void setup(void) {
     geometryTransform1.SetMatrixStacks(modelViewMatrix1, projectionMatrix1);
     
     /// 数值越小，则视角距离越远，物体越小；越大，则视角距离越近，物理越大
-    cameraFrame1.MoveForward(-15);
+    /// 物体坐标系修改其origin坐标 x=2 y=2 z=1
+    objectFrame1.MoveForward(2.0f);
+    /// 相机坐标系 深度后移 x=-10 y=-10 z=-11
+    cameraFrame1.MoveForward(-8);
+    /// 相机坐标系
+//    cameraFrame1.SetOrigin(0, 0, 10.0f);
     
     /// 定义三点 线 三角形
     GLfloat vCoast[9] = {
@@ -151,8 +156,8 @@ void setup(void) {
     triangleFanBatch1.End();
 }
 
-/// 视图窗口大小变化
-void viewportSizeChange(int w, int h) {
+/// 窗口大小变化
+void windowSizeChange(int w, int h) {
     glViewport(0, 0, w, h);
     
     /// 窗口大小变化后其投影矩阵(正交投影/透视投影)也会变化
@@ -313,7 +318,7 @@ int testForComplicatedShapes(int argc, char *argv[]) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL);
     glutCreateWindow("GL_POINTS");
     
-    glutReshapeFunc(viewportSizeChange);
+    glutReshapeFunc(windowSizeChange);
     glutSpecialFunc(specialKey);
     glutKeyboardFunc(keyPressFunc);
     glutDisplayFunc(render);

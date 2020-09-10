@@ -8,7 +8,9 @@
 
 #include <stdio.h>
 #include "Practice.hpp"
+#include "Torus.hpp"
 
 int main(int argc, char *argv[]) {
-    return testForComplicatedShapes(argc, argv);
+//    return testForComplicatedShapes(argc, argv);
+    return testForTorus(argc, argv);
 }
