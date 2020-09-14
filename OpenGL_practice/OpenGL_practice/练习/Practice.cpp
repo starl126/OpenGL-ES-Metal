@@ -45,9 +45,9 @@ void setup(void) {
     geometryTransform1.SetMatrixStacks(modelViewMatrix1, projectionMatrix1);
     
     /// 数值越小，则视角距离越远，物体越小；越大，则视角距离越近，物理越大
-    /// 物体坐标系修改其origin坐标 x=2 y=2 z=1
+    /// 物体坐标系修改其origin坐标 x=0 y=0 z=-2.0
     objectFrame1.MoveForward(2.0f);
-    /// 相机坐标系 深度后移 x=-10 y=-10 z=-11
+    /// 相机坐标系 深度后移 x=0 y=0 z=8
     cameraFrame1.MoveForward(-8);
     /// 相机坐标系
 //    cameraFrame1.SetOrigin(0, 0, 10.0f);

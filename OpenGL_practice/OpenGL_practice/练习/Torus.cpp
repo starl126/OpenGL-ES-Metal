@@ -13,6 +13,7 @@
 
 GLShaderManager smTorus;
 GLFrame vFrameTorus;
+GLFrame mFrameTorus;
 GLFrustum frustumTorus;
 GLTriangleBatch batchTorus;
 GLMatrixStack mvMatrixTorus;
@@ -77,8 +78,10 @@ void setupTorus(void) {
     
     gltMakeTorus(batchTorus, 1.0f, 0.2f, 60, 20);
     
-    /// 移动origin坐标 x=6 y=6 z=5
-    vFrameTorus.MoveForward(6.0f);
+    /// 移动origin坐标 x=0 y=0 z=6
+    vFrameTorus.MoveForward(-6.0f);
+    ///z=-10
+    mFrameTorus.MoveForward(10.0f);
     
     glPointSize(4.0f);
     
@@ -125,7 +128,15 @@ void specialKeyTorus(int key, int x, int y) {
 void renderTorus(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-    mvMatrixTorus.PushMatrix(vFrameTorus);
+    mvMatrixTorus.PushMatrix();
+    M3DMatrix44f cameraM;
+    vFrameTorus.GetCameraMatrix(cameraM);
+    mvMatrixTorus.LoadMatrix(cameraM);
+    
+    M3DMatrix44f objectM;
+    mFrameTorus.GetMatrix(objectM);
+    mvMatrixTorus.MultMatrix(objectM);
+    
     GLfloat vRed[] = {1.0f, 0.0f, 0.0f, 1.0f};
     smTorus.UseStockShader(GLT_SHADER_DEFAULT_LIGHT, transformTorus.GetModelViewMatrix(), transformTorus.GetProjectionMatrix(), vRed);
     batchTorus.Draw();
