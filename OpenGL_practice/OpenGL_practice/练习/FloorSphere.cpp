@@ -15,7 +15,7 @@ GLShaderManager fs_shaderManager;
 
 GLFrame fs_cameraFrame;
 
-GLMatrixStack fs_viewMatrix;
+GLMatrixStack fs_modelViewMatrix;
 GLMatrixStack fs_projectionMatrix;
 
 GLFrustum fs_frustum;
@@ -23,6 +23,11 @@ GLGeometryTransform fs_transform;
 
 GLBatch fs_floorBatch;
 GLTriangleBatch fs_bigSphereBatch;
+GLTriangleBatch fs_smallSphereBatch;
+
+/// 添加随机小球
+#define kNumberSpheres 50
+GLFrame fs_sphereFrames[kNumberSpheres];
 
 void fs_setupRC() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -47,6 +52,13 @@ void fs_setupRC() {
     fs_floorBatch.End();
     
     gltMakeSphere(fs_bigSphereBatch, 0.5f, 60, 20);
+    
+    gltMakeSphere(fs_smallSphereBatch, 0.5f, 40, 20);
+    for (int i=0; i<kNumberSpheres; i++) {
+        GLfloat x = float(rand()%100-50)*0.1f;
+        GLfloat z = float(rand()%40+40);
+        fs_sphereFrames[i].SetOrigin(x, 0.0f, -z);
+    }
 }
 
 void fs_changeSize(int w, int h) {
@@ -55,33 +67,47 @@ void fs_changeSize(int w, int h) {
     fs_frustum.SetPerspective(35.0f, float(w)/float(h), 1.0f, 400.0f);
     fs_projectionMatrix.LoadMatrix(fs_frustum.GetProjectionMatrix());
     
-    fs_transform.SetMatrixStacks(fs_viewMatrix, fs_projectionMatrix);
+    fs_transform.SetMatrixStacks(fs_modelViewMatrix, fs_projectionMatrix);
 }
 
 void fs_render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     
     /// 设置模型视图
-    fs_viewMatrix.PushMatrix();
+    fs_modelViewMatrix.PushMatrix();
     
     M3DMatrix44f viewM;
     fs_cameraFrame.GetCameraMatrix(viewM);
-    fs_viewMatrix.LoadMatrix(viewM);
+    fs_modelViewMatrix.LoadMatrix(viewM);
     
     GLfloat vBlue[4] = {0.0f, 0.0f, 1.0f, 1.0f};
     fs_shaderManager.UseStockShader(GLT_SHADER_FLAT, fs_transform.GetModelViewProjectionMatrix(), vBlue);
     fs_floorBatch.Draw();
     
-    ///
-    fs_viewMatrix.Translate(0.0f, 0.0f, -5.0f);
+    /// 视觉坐标
+    fs_modelViewMatrix.Translate(0.0f, 0.0f, -5.0f);
     
     GLfloat vRed[] = {1.0f, 0.0f, 0.0f, 1.0f};
     GLfloat vLight[] = {0.0f, 10.0f, 0.0f};
     fs_shaderManager.UseStockShader(GLT_SHADER_POINT_LIGHT_DIFF, fs_transform.GetModelViewMatrix(), fs_transform.GetProjectionMatrix(),vLight, vRed);
     fs_bigSphereBatch.Draw();
+    fs_modelViewMatrix.PopMatrix();
     
+    /// 绘制小圆
+    fs_modelViewMatrix.PushMatrix();
+    M3DMatrix44f vMatrix;
+    fs_cameraFrame.GetCameraMatrix(vMatrix);
+    fs_modelViewMatrix.LoadMatrix(vMatrix);
     
-    fs_viewMatrix.PopMatrix();
+    for (int i=0; i<kNumberSpheres; i++) {
+        GLFrame frame = fs_sphereFrames[i];
+        M3DMatrix44f matrix;
+        frame.GetMatrix(matrix);
+        fs_modelViewMatrix.MultMatrix(matrix);
+        fs_shaderManager.UseStockShader(GLT_SHADER_POINT_LIGHT_DIFF, fs_transform.GetModelViewMatrix(), fs_transform.GetProjectionMatrix(), vLight, vRed);
+        fs_smallSphereBatch.Draw();
+    }
+    fs_modelViewMatrix.PopMatrix();
     
     glutSwapBuffers();
 }
