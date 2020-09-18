@@ -14,6 +14,7 @@
 		4B751BEB2508B89C00514DB4 /* libGLTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B751BD62508B74400514DB4 /* libGLTools.a */; };
 		4B751BED2508BA6A00514DB4 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B751BEC2508BA6900514DB4 /* main.cpp */; };
 		4B751BF02509C17900514DB4 /* Torus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B751BEE2509C17900514DB4 /* Torus.cpp */; };
+		4BA800692513679200B03B60 /* FloorSphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4BA800672513679200B03B60 /* FloorSphere.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,8 @@
 		4B751BEE2509C17900514DB4 /* Torus.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Torus.cpp; sourceTree = "<group>"; };
 		4B751BEF2509C17900514DB4 /* Torus.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Torus.hpp; sourceTree = "<group>"; };
 		4B751BF12509C1B300514DB4 /* LibraryHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LibraryHeader.h; sourceTree = "<group>"; };
+		4BA800672513679200B03B60 /* FloorSphere.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FloorSphere.cpp; sourceTree = "<group>"; };
+		4BA800682513679200B03B60 /* FloorSphere.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FloorSphere.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +138,8 @@
 				4B751BE82508B7A800514DB4 /* Practice.cpp */,
 				4B751BEF2509C17900514DB4 /* Torus.hpp */,
 				4B751BEE2509C17900514DB4 /* Torus.cpp */,
+				4BA800682513679200B03B60 /* FloorSphere.hpp */,
+				4BA800672513679200B03B60 /* FloorSphere.cpp */,
 			);
 			path = "练习";
 			sourceTree = "<group>";
@@ -208,6 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B751BF02509C17900514DB4 /* Torus.cpp in Sources */,
+				4BA800692513679200B03B60 /* FloorSphere.cpp in Sources */,
 				4B751BED2508BA6A00514DB4 /* main.cpp in Sources */,
 				4B751BEA2508B7A900514DB4 /* Practice.cpp in Sources */,
 			);

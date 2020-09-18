@@ -22,6 +22,8 @@ GLGeometryTransform transformTorus;
 
 int isCull = 0;
 int isDepth = 0;
+int width = 800;
+int height = 800;
 
 /// 菜单选择
 void pressMenu(int value) {
@@ -101,7 +103,10 @@ void windowSizeChangedTorus(int w, int h) {
     if (h == 0) {
         h = 1;
     }
-    frustumTorus.SetPerspective(35.0f, float(w)/float(h), 2.0f, -500.0f);
+    
+    width = w; height = h;
+    
+    frustumTorus.SetPerspective(35.0f, float(w)/float(h), 2.0f, 500.0f);
     proMatrixTorus.LoadMatrix(frustumTorus.GetProjectionMatrix());
 }
 

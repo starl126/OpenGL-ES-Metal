@@ -9,8 +9,10 @@
 #include <stdio.h>
 #include "Practice.hpp"
 #include "Torus.hpp"
+#include "FloorSphere.hpp"
 
 int main(int argc, char *argv[]) {
 //    return testForComplicatedShapes(argc, argv);
-    return testForTorus(argc, argv);
+//    return testForTorus(argc, argv);
+    return fs_main(argc, argv);
 }
