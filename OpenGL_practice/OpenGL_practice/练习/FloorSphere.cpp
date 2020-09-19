@@ -13,7 +13,12 @@
 
 GLShaderManager fs_shaderManager;
 
+/// 视角坐标
 GLFrame fs_cameraFrame;
+/// 地平线对象坐标
+GLFrame fs_floorObjectFrame;
+/// 大圆对象坐标
+GLFrame fs_bigSphereObjectFrame;
 
 GLMatrixStack fs_modelViewMatrix;
 GLMatrixStack fs_projectionMatrix;
@@ -28,6 +33,11 @@ GLTriangleBatch fs_smallSphereBatch;
 /// 添加随机小球
 #define kNumberSpheres 50
 GLFrame fs_sphereFrames[kNumberSpheres];
+
+/// 正背面剔除
+GLuint fs_isCull = 0;
+GLuint fs_isDepthTest = 0;
+GLuint fs_zFighting = 0;
 
 void fs_setupRC() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -55,10 +65,75 @@ void fs_setupRC() {
     
     gltMakeSphere(fs_smallSphereBatch, 0.5f, 40, 20);
     for (int i=0; i<kNumberSpheres; i++) {
-        GLfloat x = float(rand()%100-50)*0.1f;
-        GLfloat z = float(rand()%40+40);
+        GLfloat x = float(rand()%100-50);
+        GLfloat z = float(rand()%40+10);
         fs_sphereFrames[i].SetOrigin(x, 0.0f, -z);
     }
+    
+    /// 添加菜单
+    void fs_createMenu(int value);
+    glutCreateMenu(fs_createMenu);
+    glutAddMenuEntry("正背面剔除", 0);
+    glutAddMenuEntry("深度测试", 1);
+    glutAddMenuEntry("线填充", 2);
+    glutAddMenuEntry("点填充", 3);
+    glutAddMenuEntry("fill填充", 4);
+    glutAddMenuEntry("z-fighting", 5);
+    glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
+void fs_createMenu(int value) {
+    switch (value) {
+        case 0:
+            fs_isCull = !fs_isCull;
+            glEnable(GL_CULL_FACE);
+            if (fs_isCull) {
+                glEnable(GL_CULL_FACE);
+                glCullFace(GL_BACK);
+                glFrontFace(GL_CCW);
+            } else {
+                glDisable(GL_CULL_FACE);
+            }
+            break;
+        case 1:
+            fs_isDepthTest = !fs_isDepthTest;
+            if (fs_isDepthTest) {
+                glEnable(GL_DEPTH_TEST);
+            } else {
+                glDisable(GL_DEPTH_TEST);
+            }
+            break;
+        case 2:
+        {
+            glPolygonMode(GL_FRONT, GL_LINE);
+        }
+            break;
+        case 3:
+        {
+            glPolygonMode(GL_FRONT, GL_POINT);
+        }
+            break;
+        case 4:
+        {
+            glPolygonMode(GL_FRONT, GL_FILL);
+        }
+            break;
+        case 5:
+        {
+            fs_zFighting = !fs_zFighting;
+            if (fs_zFighting) {
+                glEnable(GL_POLYGON_OFFSET_FILL);
+                glPolygonOffset(-1, -1);
+            } else {
+                glDisable(GL_POLYGON_OFFSET_FILL);
+            }
+        }
+            break;
+        default:
+            break;
+    }
+    
+    glutPostRedisplay();
 }
 
 void fs_changeSize(int w, int h) {
@@ -73,42 +148,31 @@ void fs_changeSize(int w, int h) {
 void fs_render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     
-    /// 设置模型视图
-    fs_modelViewMatrix.PushMatrix();
-    
-    M3DMatrix44f viewM;
-    fs_cameraFrame.GetCameraMatrix(viewM);
-    fs_modelViewMatrix.LoadMatrix(viewM);
-    
+    /// floor
+    fs_modelViewMatrix.PushMatrix(fs_floorObjectFrame);
     GLfloat vBlue[4] = {0.0f, 0.0f, 1.0f, 1.0f};
     fs_shaderManager.UseStockShader(GLT_SHADER_FLAT, fs_transform.GetModelViewProjectionMatrix(), vBlue);
     fs_floorBatch.Draw();
+    fs_modelViewMatrix.PopMatrix();
     
-    /// 视觉坐标
-    fs_modelViewMatrix.Translate(0.0f, 0.0f, -5.0f);
-    
+    /// big sphere
+    fs_modelViewMatrix.PushMatrix(fs_bigSphereObjectFrame);
     GLfloat vRed[] = {1.0f, 0.0f, 0.0f, 1.0f};
     GLfloat vLight[] = {0.0f, 10.0f, 0.0f};
+    fs_modelViewMatrix.Translate(0, 0, 3);
     fs_shaderManager.UseStockShader(GLT_SHADER_POINT_LIGHT_DIFF, fs_transform.GetModelViewMatrix(), fs_transform.GetProjectionMatrix(),vLight, vRed);
     fs_bigSphereBatch.Draw();
     fs_modelViewMatrix.PopMatrix();
-    
-    /// 绘制小圆
-    fs_modelViewMatrix.PushMatrix();
-    M3DMatrix44f vMatrix;
-    fs_cameraFrame.GetCameraMatrix(vMatrix);
-    fs_modelViewMatrix.LoadMatrix(vMatrix);
-    
+
+    /// several small sphere
     for (int i=0; i<kNumberSpheres; i++) {
         GLFrame frame = fs_sphereFrames[i];
-        M3DMatrix44f matrix;
-        frame.GetMatrix(matrix);
-        fs_modelViewMatrix.MultMatrix(matrix);
+        fs_modelViewMatrix.PushMatrix(frame);
         fs_shaderManager.UseStockShader(GLT_SHADER_POINT_LIGHT_DIFF, fs_transform.GetModelViewMatrix(), fs_transform.GetProjectionMatrix(), vLight, vRed);
         fs_smallSphereBatch.Draw();
+        fs_modelViewMatrix.PopMatrix();
     }
-    fs_modelViewMatrix.PopMatrix();
-    
+
     glutSwapBuffers();
 }
 
