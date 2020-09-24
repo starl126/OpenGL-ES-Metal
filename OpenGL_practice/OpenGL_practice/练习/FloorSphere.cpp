@@ -60,6 +60,13 @@ void fs_setupRC() {
     fs_floorBatch.End();
     
     gltMakeSphere(fs_bigSphereBatch, 0.4f, 40, 80);
+    gltMakeSphere(fs_smallSphereBatch, 0.3f, 20, 40);
+    
+    for (int i=0; i<kNumberSpheres; ++i) {
+        GLfloat x = (GLfloat(rand()%1000 - 500)) * 0.1f;
+        GLfloat z = (GLfloat(rand()%1000 - 500)) * 0.1f;
+        fs_sphereFrames[i].SetOrigin(x, 0.0f, z);
+    }
 }
 
 void fs_changeSize(int w, int h) {
@@ -76,9 +83,11 @@ void fs_changeSize(int w, int h) {
 void fs_render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     
-    /// 绘制地平线
     GLfloat vBlue[] = {0.0f, 0.0f, 1.0f, 1.0f};
-    fs_shaderManager.UseStockShader(GLT_SHADER_FLAT, fs_transform.GetModelViewProjectionMatrix(), vBlue);
+    GLfloat vBlack[] = {0.0f, 0.0f, 0.0f, 1.0f};
+    GLfloat vGreen[] = {0.0f, 1.0f, 0.0f, 1.0f};
+    /// 绘制地平线
+    fs_shaderManager.UseStockShader(GLT_SHADER_FLAT, fs_transform.GetModelViewProjectionMatrix(), vGreen);
     fs_floorBatch.Draw();
     
     /// 开启定时器
@@ -107,12 +116,19 @@ void fs_render() {
     glEnable(GL_LINE_SMOOTH);
     glLineWidth(2.5F);
     
-    GLfloat vBlack[] = {0.0f, 0.0f, 0.0f, 1.0f};
     fs_shaderManager.UseStockShader(GLT_SHADER_POINT_LIGHT_DIFF, fs_transform.GetModelViewMatrix(), fs_transform.GetProjectionMatrix(), vLightPos, vBlack);
     fs_bigSphereBatch.Draw();
     
     fs_modelViewMatrix.PopMatrix();
     fs_modelViewMatrix.PopMatrix();
+    
+    /// 绘制小球
+    for (int i=0; i<kNumberSpheres; ++i) {
+        fs_modelViewMatrix.PushMatrix(fs_sphereFrames[i]);
+        fs_shaderManager.UseStockShader(GLT_SHADER_POINT_LIGHT_DIFF, fs_transform.GetModelViewMatrix(), fs_transform.GetProjectionMatrix(), vLightPos, vBlue);
+        fs_smallSphereBatch.Draw();
+        fs_modelViewMatrix.PopMatrix();
+    }
     
     /// reset state
     glLineWidth(1.0f);
