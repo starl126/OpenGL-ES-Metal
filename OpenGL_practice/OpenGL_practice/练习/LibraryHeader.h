@@ -20,5 +20,6 @@
 #include <math.h>
 #include <glut/glut.h>
 #include "math3d.h"
+#include "StopWatch.h"
 
 #endif /* LibraryHeader_h */

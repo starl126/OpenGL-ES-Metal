@@ -19,6 +19,8 @@ GLFrame fs_cameraFrame;
 GLFrame fs_floorObjectFrame;
 /// 大圆对象坐标
 GLFrame fs_bigSphereObjectFrame;
+/// 自转对象坐标
+GLFrame fs_selfRotationFrame;
 
 GLMatrixStack fs_modelViewMatrix;
 GLMatrixStack fs_projectionMatrix;
@@ -70,6 +72,7 @@ void fs_setupRC() {
         fs_sphereFrames[i].SetOrigin(x, 0.0f, -z);
     }
     
+    fs_selfRotationFrame.SetOrigin(6.0f, 0.0f, -18.0f);
     /// 添加菜单
     void fs_createMenu(int value);
     glutCreateMenu(fs_createMenu);
@@ -159,7 +162,7 @@ void fs_render() {
     fs_modelViewMatrix.PushMatrix(fs_bigSphereObjectFrame);
     GLfloat vRed[] = {1.0f, 0.0f, 0.0f, 1.0f};
     GLfloat vLight[] = {0.0f, 10.0f, 0.0f};
-    fs_modelViewMatrix.Translate(0, 0, 3);
+    fs_modelViewMatrix.Translate(0, 0, 6);
     fs_shaderManager.UseStockShader(GLT_SHADER_POINT_LIGHT_DIFF, fs_transform.GetModelViewMatrix(), fs_transform.GetProjectionMatrix(),vLight, vRed);
     fs_bigSphereBatch.Draw();
     fs_modelViewMatrix.PopMatrix();
@@ -173,7 +176,22 @@ void fs_render() {
         fs_modelViewMatrix.PopMatrix();
     }
 
+    /// 定时器
+    static CStopWatch rotateTimer;
+    GLfloat yRotate = rotateTimer.GetElapsedSeconds() * 60.0f;
+    
+    M3DMatrix44f m;
+    fs_selfRotationFrame.GetCameraMatrix(m);
+    fs_modelViewMatrix.PushMatrix();
+    fs_modelViewMatrix.LoadMatrix(m);
+    fs_modelViewMatrix.Rotate(yRotate * -2.0f, 0.0f, 1.0f, 0.0f);
+    fs_modelViewMatrix.Translate(5.0f, 0.0f, 0.0f);
+    fs_shaderManager.UseStockShader(GLT_SHADER_FLAT, fs_transform.GetModelViewProjectionMatrix(), vBlue);
+    fs_smallSphereBatch.Draw();
+    fs_modelViewMatrix.PopMatrix();
+    
     glutSwapBuffers();
+    glutPostRedisplay();
 }
 
 int fs_main(int argc, char *argv[]) {
