@@ -16,6 +16,7 @@
 		4B751BF02509C17900514DB4 /* Torus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B751BEE2509C17900514DB4 /* Torus.cpp */; };
 		4BA800692513679200B03B60 /* FloorSphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4BA800672513679200B03B60 /* FloorSphere.cpp */; };
 		4BA80071251B3F0500B03B60 /* SphereCylinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4BA8006F251B3F0500B03B60 /* SphereCylinder.cpp */; };
+		4BA80074251C3A2700B03B60 /* RotateSphere.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4BA80072251C3A2700B03B60 /* RotateSphere.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,8 @@
 		4BA800682513679200B03B60 /* FloorSphere.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FloorSphere.hpp; sourceTree = "<group>"; };
 		4BA8006F251B3F0500B03B60 /* SphereCylinder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SphereCylinder.cpp; sourceTree = "<group>"; };
 		4BA80070251B3F0500B03B60 /* SphereCylinder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SphereCylinder.hpp; sourceTree = "<group>"; };
+		4BA80072251C3A2700B03B60 /* RotateSphere.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RotateSphere.cpp; sourceTree = "<group>"; };
+		4BA80073251C3A2700B03B60 /* RotateSphere.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RotateSphere.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +148,8 @@
 				4BA800672513679200B03B60 /* FloorSphere.cpp */,
 				4BA80070251B3F0500B03B60 /* SphereCylinder.hpp */,
 				4BA8006F251B3F0500B03B60 /* SphereCylinder.cpp */,
+				4BA80073251C3A2700B03B60 /* RotateSphere.hpp */,
+				4BA80072251C3A2700B03B60 /* RotateSphere.cpp */,
 			);
 			path = "练习";
 			sourceTree = "<group>";
@@ -218,6 +223,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B751BF02509C17900514DB4 /* Torus.cpp in Sources */,
+				4BA80074251C3A2700B03B60 /* RotateSphere.cpp in Sources */,
 				4BA80071251B3F0500B03B60 /* SphereCylinder.cpp in Sources */,
 				4BA800692513679200B03B60 /* FloorSphere.cpp in Sources */,
 				4B751BED2508BA6A00514DB4 /* main.cpp in Sources */,

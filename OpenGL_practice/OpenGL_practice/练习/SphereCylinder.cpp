@@ -174,7 +174,7 @@ void sc_reshape(int w, int h) {
         h = 1;
     }
     glViewport(0, 0, w, h);
-    sc_frustum.SetPerspective(35.0f, GLfloat(w)/GLfloat(h), 1.0f, 200.0f);
+    sc_frustum.SetPerspective(35.0f, GLfloat(w)/GLfloat(h), 9.0f, 200.0f);
     sc_projectionMatrix.LoadMatrix(sc_frustum.GetProjectionMatrix());
     
     sc_modelViewMatrix.LoadIdentity();
