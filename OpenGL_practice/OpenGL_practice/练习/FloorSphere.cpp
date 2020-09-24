@@ -42,6 +42,9 @@ void fs_setupRC() {
     
     fs_shaderManager.InitializeStockShaders();
     
+    /// 第二种方式： 使用物体坐标中介
+    fs_objectFrame.MoveForward(5.0f);
+    
     /// 开启深度测试
     glEnable(GL_DEPTH_TEST);
     
@@ -87,10 +90,13 @@ void fs_render() {
     GLfloat vBlack[] = {0.0f, 0.0f, 0.0f, 1.0f};
     GLfloat vGreen[] = {0.0f, 1.0f, 0.0f, 1.0f};
     
-    /// 加入观察者
-    M3DMatrix44f cameraM;
-    fs_cameraFrame.GetCameraMatrix(cameraM);
-    fs_modelViewMatrix.PushMatrix(cameraM);
+    /// 第一种方式：加入观察者
+//    M3DMatrix44f cameraM;
+//    fs_cameraFrame.GetCameraMatrix(cameraM);
+//    fs_modelViewMatrix.PushMatrix(cameraM);
+    
+    /// 第二种方式： 加入对象坐标
+    fs_modelViewMatrix.PushMatrix(fs_objectFrame);
     
     /// 绘制地平线
     fs_shaderManager.UseStockShader(GLT_SHADER_FLAT, fs_transform.GetModelViewProjectionMatrix(), vGreen);
@@ -164,16 +170,28 @@ void fs_specialKey(int key, int w, int h) {
     /// 旋转度数
     GLfloat degree = m3dDegToRad(5.0f);
     if (key == GLUT_KEY_UP) {
-        fs_cameraFrame.MoveForward(linear);
+        /// 第一种方式： 相机坐标平移
+//        fs_cameraFrame.MoveForward(linear);
+        /// 第二种方式： 物体坐标平移
+        fs_objectFrame.MoveForward(linear);
     }
     else if (key == GLUT_KEY_DOWN) {
-        fs_cameraFrame.MoveForward(-linear);
+        /// 第一种方式： 相机坐标平移
+//        fs_cameraFrame.MoveForward(-linear);
+        /// 第二种方式： 物体坐标平移
+        fs_objectFrame.MoveForward(-linear);
     }
     else if (key == GLUT_KEY_LEFT) {
-        fs_cameraFrame.RotateWorld(degree, 0.0f, 1.0f, 0.0f);
+        /// 第一种方式： 相机坐标平移
+//        fs_cameraFrame.RotateWorld(degree, 0.0f, 1.0f, 0.0f);
+        /// 第二种方式： 物体坐标平移
+        fs_objectFrame.RotateWorld(degree, 0.0f, 1.0f, 0.0f);
     }
     else if (key == GLUT_KEY_RIGHT) {
-        fs_cameraFrame.RotateWorld(-degree, 0.0f, 1.0f, 0.0f);
+        /// 第一种方式： 相机坐标平移
+//        fs_cameraFrame.RotateWorld(-degree, 0.0f, 1.0f, 0.0f);
+        /// 第二种方式： 物体坐标平移
+        fs_objectFrame.RotateWorld(-degree, 0.0f, 1.0f, 0.0f);
     }
 }
 
