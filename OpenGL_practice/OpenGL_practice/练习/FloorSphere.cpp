@@ -86,6 +86,12 @@ void fs_render() {
     GLfloat vBlue[] = {0.0f, 0.0f, 1.0f, 1.0f};
     GLfloat vBlack[] = {0.0f, 0.0f, 0.0f, 1.0f};
     GLfloat vGreen[] = {0.0f, 1.0f, 0.0f, 1.0f};
+    
+    /// 加入观察者
+    M3DMatrix44f cameraM;
+    fs_cameraFrame.GetCameraMatrix(cameraM);
+    fs_modelViewMatrix.PushMatrix(cameraM);
+    
     /// 绘制地平线
     fs_shaderManager.UseStockShader(GLT_SHADER_FLAT, fs_transform.GetModelViewProjectionMatrix(), vGreen);
     fs_floorBatch.Draw();
@@ -146,8 +152,29 @@ void fs_render() {
     fs_modelViewMatrix.PopMatrix();
     
     fs_modelViewMatrix.PopMatrix();
+    fs_modelViewMatrix.PopMatrix();
     
     glutSwapBuffers();
+    glutPostRedisplay();
+}
+void fs_specialKey(int key, int w, int h) {
+    
+    /// 移动步长
+    GLfloat linear = 0.1f;
+    /// 旋转度数
+    GLfloat degree = m3dDegToRad(5.0f);
+    if (key == GLUT_KEY_UP) {
+        fs_cameraFrame.MoveForward(linear);
+    }
+    else if (key == GLUT_KEY_DOWN) {
+        fs_cameraFrame.MoveForward(-linear);
+    }
+    else if (key == GLUT_KEY_LEFT) {
+        fs_cameraFrame.RotateWorld(degree, 0.0f, 1.0f, 0.0f);
+    }
+    else if (key == GLUT_KEY_RIGHT) {
+        fs_cameraFrame.RotateWorld(-degree, 0.0f, 1.0f, 0.0f);
+    }
     glutPostRedisplay();
 }
 
@@ -162,6 +189,7 @@ int fs_main(int argc, char *argv[]) {
     
     glutDisplayFunc(fs_render);
     glutReshapeFunc(fs_changeSize);
+    glutSpecialFunc(fs_specialKey);
     
     GLenum err = glewInit();
     if (GLEW_OK != err) {
