@@ -26,6 +26,7 @@ GLTriangleBatch sc_torusBatch;
 GLTriangleBatch sc_cylinderBatch;
 GLTriangleBatch sc_coneBatch;
 GLTriangleBatch sc_diskBatch;
+GLBatch         sc_cubeBatch;
 
 GLShaderManager sc_shaderManager;
 
@@ -51,8 +52,9 @@ void sc_setup() {
     gltMakeCylinder(sc_cylinderBatch, 1.0f, 1.0f, 2.0f, 20, 5);
     gltMakeCylinder(sc_coneBatch, 2.0f, 0.0f, 3.0f, 20, 5);
     gltMakeDisk(sc_diskBatch, 0.6f, 1.5f, 20, 5);
+    gltMakeCube(sc_cubeBatch, 0.6f);
 }
-void sc_draw(GLTriangleBatch &batch) {
+void sc_draw(GLBatchBase &batch) {
     
     sc_shaderManager.UseStockShader(GLT_SHADER_FLAT, sc_transform.GetModelViewProjectionMatrix(), sc_vGreen);
     batch.Draw();
@@ -109,6 +111,9 @@ void sc_render() {
         case 4:
             sc_draw(sc_diskBatch);
             break;
+        case 5:
+            sc_draw(sc_cubeBatch);
+            break;
         default:
             break;
     }
@@ -134,7 +139,7 @@ void sc_specialKey(int key, int x, int y) {
 void sc_keyPress(unsigned char key, int x, int y) {
     if (key == 32) {
         ++sc_step;
-        if (sc_step > 4) {
+        if (sc_step > 5) {
             sc_step = 0;
         }
     }
@@ -154,6 +159,9 @@ void sc_keyPress(unsigned char key, int x, int y) {
             break;
         case 4:
             glutSetWindowTitle("disk");
+            break;
+        case 5:
+            glutSetWindowTitle("cube");
             break;
         default:
             break;
