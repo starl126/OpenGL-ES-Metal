@@ -175,7 +175,6 @@ void fs_specialKey(int key, int w, int h) {
     else if (key == GLUT_KEY_RIGHT) {
         fs_cameraFrame.RotateWorld(-degree, 0.0f, 1.0f, 0.0f);
     }
-    glutPostRedisplay();
 }
 
 int fs_main(int argc, char *argv[]) {
