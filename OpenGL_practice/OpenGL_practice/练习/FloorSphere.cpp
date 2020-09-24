@@ -60,7 +60,7 @@ void fs_setupRC() {
     fs_floorBatch.End();
     
     gltMakeSphere(fs_bigSphereBatch, 0.4f, 40, 80);
-    gltMakeSphere(fs_smallSphereBatch, 0.3f, 20, 40);
+    gltMakeSphere(fs_smallSphereBatch, 0.1f, 20, 40);
     
     for (int i=0; i<kNumberSpheres; ++i) {
         GLfloat x = (GLfloat(rand()%1000 - 500)) * 0.1f;
@@ -120,15 +120,6 @@ void fs_render() {
     fs_bigSphereBatch.Draw();
     
     fs_modelViewMatrix.PopMatrix();
-    fs_modelViewMatrix.PopMatrix();
-    
-    /// 绘制小球
-    for (int i=0; i<kNumberSpheres; ++i) {
-        fs_modelViewMatrix.PushMatrix(fs_sphereFrames[i]);
-        fs_shaderManager.UseStockShader(GLT_SHADER_POINT_LIGHT_DIFF, fs_transform.GetModelViewMatrix(), fs_transform.GetProjectionMatrix(), vLightPos, vBlue);
-        fs_smallSphereBatch.Draw();
-        fs_modelViewMatrix.PopMatrix();
-    }
     
     /// reset state
     glLineWidth(1.0f);
@@ -136,6 +127,25 @@ void fs_render() {
     glDisable(GL_BLEND);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDisable(GL_POLYGON_OFFSET_LINE);
+    
+    /// 绘制小球
+    for (int i=0; i<kNumberSpheres; ++i) {
+        fs_modelViewMatrix.PushMatrix();
+        fs_modelViewMatrix.MultMatrix(fs_sphereFrames[i]);
+        fs_shaderManager.UseStockShader(GLT_SHADER_POINT_LIGHT_DIFF, fs_transform.GetModelViewMatrix(), fs_transform.GetProjectionMatrix(), vLightPos, vBlue);
+        fs_smallSphereBatch.Draw();
+        fs_modelViewMatrix.PopMatrix();
+    }
+    
+    /// 公转
+    fs_modelViewMatrix.PushMatrix();
+    fs_modelViewMatrix.Rotate(yRot * -2.0f, 0.0f, 1.0f, 0.0f);
+    fs_modelViewMatrix.Translate(0.8f, 0.0f, 0.0f);
+    fs_shaderManager.UseStockShader(GLT_SHADER_POINT_LIGHT_DIFF, fs_transform.GetModelViewMatrix(), fs_transform.GetProjectionMatrix(), vLightPos, vBlue);
+    fs_smallSphereBatch.Draw();
+    fs_modelViewMatrix.PopMatrix();
+    
+    fs_modelViewMatrix.PopMatrix();
     
     glutSwapBuffers();
     glutPostRedisplay();
