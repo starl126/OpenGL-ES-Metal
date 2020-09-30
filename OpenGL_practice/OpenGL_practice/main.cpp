@@ -12,11 +12,13 @@
 #include "FloorSphere.hpp"
 #include "SphereCylinder.hpp"
 #include "RotateSphere.hpp"
+#include "Texture.hpp"
 
 int main(int argc, char *argv[]) {
 //    return testForComplicatedShapes(argc, argv);
 //    return testForTorus(argc, argv);
-    return fs_main(argc, argv);
+//    return fs_main(argc, argv);
 //    return sc_main(argc, argv);
 //    return rs_main(argc, argv);
+    return t_main(argc, argv);
 }
