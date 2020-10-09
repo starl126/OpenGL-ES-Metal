@@ -50,8 +50,19 @@ bool t_loadTGATexture(const char *tgaFileName, GLint minFiler, GLint magFilter, 
     /// 销毁纹理内存数据
     free(pixels);
     
-    /// 加载Mip map
-    glGenerateMipmap(GL_TEXTURE_2D);
+    ///只有当minFilter等于以下四种模式，才可以生成Mip贴图
+    ///GL_NEAREST_MIPMAP_NEAREST具有非常好的性能，并且闪烁现象非常弱
+    ///GL_LINEAR_MIPMAP_NEAREST常常用于对游戏进行加速，它使用了高质量的线性过滤器
+    ///GL_NEAREST_MIPMAP_LINEAR和GL_LINEAR_MIPMAP_LINEAR 过滤器在Mip层之间执行了一些额外的插值，以消除它们之间的过滤痕迹
+    ///GL_LINEAR_MIPMAP_LINEAR 三线性Mip贴图，纹理过滤的黄金准则，具有最高的精度
+    if (minFiler == GL_NEAREST_MIPMAP_NEAREST ||
+        minFiler == GL_NEAREST_MIPMAP_LINEAR  ||
+        minFiler == GL_LINEAR_MIPMAP_NEAREST  ||
+        minFiler == GL_LINEAR_MIPMAP_LINEAR) {
+        
+        /// 加载Mip map
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
     
     return true;
 }
@@ -179,7 +190,7 @@ void t_setup() {
     glBindTexture(GL_TEXTURE_2D, t_textureId);
     
     /// 载入纹理并设置纹理参数
-    bool success = t_loadTGATexture("stone.tga", GL_NEAREST, GL_LINEAR, GL_CLAMP_TO_EDGE);
+    bool success = t_loadTGATexture("stone.tga", GL_LINEAR_MIPMAP_NEAREST, GL_LINEAR, GL_CLAMP_TO_EDGE);
     
     if (!success) {
         printf("load tga texture failed\n");
